@@ -1,0 +1,9 @@
+name: Up2DateUpdater
+main: me.KevinW1998.Up2DateUpdater.MainUpdater
+version: 1.0
+website: dev.bukkit.org/bukkit-mods/Up2DateUpdater/
+description: >
+              Updates your plugins for you!
+commands:
+  up2date:
+    description: Main Up2Date

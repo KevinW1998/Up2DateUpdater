@@ -3,6 +3,8 @@ package me.KevinW1998.Up2DateUpdater.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import me.KevinW1998.Up2DateUpdater.Utils.DevBukkit.DevBukkitFile;
 import me.KevinW1998.Up2DateUpdater.Utils.DevBukkit.FileType;
@@ -77,37 +79,24 @@ public class VersionsComparer {
 		return lF.toArray(new DevBukkitFile[lF.size()]);
 	}
 
-	//IMPROVE REQ:
-	//"blag v1.0 for 1.51" --> parse_:"1.0" NOT "1.0 for 1.51"
-	private String parseVersionNumber(String n) { //XXX NEED IMPROVE
-		boolean conNum = false;
-		int sTempInt = 0;
-		int sInt = n.length();
-		for(int i = 0; i < 10;i++){
-			if((sTempInt = n.indexOf(Integer.toString(i))) != -1 && sTempInt < sInt){
-				conNum = true;
-				sInt = sTempInt;
-			}
-		}
-		int eTempInt = 0;
-		int eInt = 0;
-		if(conNum){
-			for(int i = 0; i < 10;i++){
-				if((eTempInt = n.lastIndexOf(Integer.toString(i))) != -1 && eTempInt > eInt){
-					eInt = eTempInt;
-				}
-			}
-			return n.substring(sInt, eInt+1);
-		}
-		return "";
-	}
-
 	public boolean hasUpdate(String content, PluginUpdateInfo pui) {
 		DevBukkitFile[] files = getFileTargets(content);
 		if (pattenComparerSystem == Comparer.VERSION_WEBSITE_COMPARE) {
-			String nNam = files[0].Name;
-			String oVer = pui.p.getDescription().getVersion();
-			System.out.println(parseVersionNumber(nNam));
+			Pattern verParser = Pattern.compile("\\d+(?:\\.\\d+)+");
+			Matcher nVerMatcher = verParser.matcher(files[0].Name);
+			Matcher oVerMatcher = verParser.matcher(pui.p.getDescription().getVersion());
+			if(!nVerMatcher.find() || !oVerMatcher.find()){
+				return false; //TODO Better Reason (e.g. Reason Obj)
+			}
+			String nVer = nVerMatcher.group();
+			String oVer = oVerMatcher.group();
+			VersionWebsiteCompare vwc = new VersionWebsiteCompare(oVer);
+			int res = vwc.compareTo(new VersionWebsiteCompare(nVer));
+			if(res == -1){
+				return true;
+			}else if(res == 0 || res == 1){
+				return false;
+			}
 		}
 		return false;
 	}

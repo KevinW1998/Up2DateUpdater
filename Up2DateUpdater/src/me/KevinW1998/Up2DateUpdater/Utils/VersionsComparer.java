@@ -25,7 +25,7 @@ public class VersionsComparer {
 		pattenComparerSystem = c;
 	}
 
-	public boolean hasUpdate(PluginUpdateInfo pui) throws IOException {
+	public boolean hasUpdate(PluginUpdateInfo pui) throws IOException, MalformedURLException {
 		if (pattenComparerSystem == Comparer.VERSION_WEBSITE_COMPARE) {
 			DevBukkitSite dbs = new DevBukkitSite(pui, pui.URL);
 			dbs.download();

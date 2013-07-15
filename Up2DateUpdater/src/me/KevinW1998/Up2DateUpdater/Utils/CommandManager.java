@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import me.KevinW1998.Up2DateUpdater.Utils.DevBukkit.DevBukkitSite;
+import me.KevinW1998.Up2DateUpdater.err.ErrorReporter;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -60,7 +61,7 @@ public class CommandManager {
 				c.sendMessage(ChatColor.RED + "No new updates!");
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			ErrorReporter.ReportError(e, c);
 		}
 	}
 	

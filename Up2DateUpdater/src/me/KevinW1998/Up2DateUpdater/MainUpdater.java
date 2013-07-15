@@ -113,17 +113,13 @@ public class MainUpdater extends JavaPlugin {
 				tar = pui;
 			}
 		}
-		DevBukkitSite dbs = null;
+		VersionsComparer vs = new VersionsComparer(Comparer.VERSION_WEBSITE_COMPARE);
 		try {
-			dbs = new DevBukkitSite(tar, tar.URL);
+			System.out.println(""+vs.hasUpdate(tar));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		}
-		try {
-			dbs.download();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		dbs.hasUpdate();
 	}
 }

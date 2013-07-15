@@ -52,23 +52,15 @@ public class CommandManager {
 			c.sendMessage(ChatColor.RED + "Didn't found plugin with name: \"" + ChatColor.GREEN + p + ChatColor.RED + "\"");
 			return;
 		}
-		DevBukkitSite dbs = null;
+		VersionsComparer vs = new VersionsComparer(Comparer.VERSION_WEBSITE_COMPARE);
 		try {
-			dbs = new DevBukkitSite(fP, fP.URL);
-		} catch (MalformedURLException e) {
-			c.sendMessage(ChatColor.RED + "Plugin-URL wrong, wrong formatted or isn't set yet!");
-			return;
-		}
-		try {
-			dbs.download();
+			if(vs.hasUpdate(fP)){
+				c.sendMessage(ChatColor.GREEN + "New update found!");
+			}else{
+				c.sendMessage(ChatColor.RED + "No new updates!");
+			}
 		} catch (IOException e) {
-			c.sendMessage(ChatColor.RED + "Couldn't download URL-file for version compare!");
-			return;
-		}
-		if(dbs.hasUpdate()){
-			c.sendMessage(ChatColor.GREEN + "New update found!");
-		}else{
-			c.sendMessage(ChatColor.RED + "No new updates!");
+			e.printStackTrace();
 		}
 	}
 	
